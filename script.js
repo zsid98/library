@@ -24,11 +24,8 @@ function displayBooks() {
         let bookChild = document.createElement('div');
         bookChild.className = 'book';
 
-        let spine = document.createElement('div');
-        spine.className = 'spine';
-
-        let info = document.createElement('div');
-        info.className = 'info';
+        let titleAuthor = document.createElement('div');
+        titleAuthor.className = 'title-author';
 
         let bookTitle = document.createElement('div');
         bookTitle.className = 'book-title';
@@ -36,18 +33,27 @@ function displayBooks() {
         
         let bookAuthor = document.createElement('div');
         bookAuthor.className = 'book-author';
-        bookAuthor.textContent = currentObject.author;
+        bookAuthor.textContent = `By ${currentObject.author}`;
 
+        titleAuthor.append(bookTitle, bookAuthor);
+
+        let pagesYear = document.createElement('div');
+        pagesYear.className = 'pages-year';
+
+        let bookPages = document.createElement('div');
+        bookPages.className = 'book-pages';
+        bookPages.textContent = `${currentObject.pages} pages`;
+        
         let bookYear = document.createElement('div');
         bookYear.className = 'book-year';
         bookYear.textContent = currentObject.year;
 
-        let bookPages = document.createElement('div');
-        bookPages.className = 'book-pages';
-        bookPages.textContent = currentObject.pages;
-        
-        info.append(bookTitle, bookAuthor, bookYear, bookPages);
-        bookChild.append(spine, info);
+        let status = document.createElement('div');
+        status.className = 'status';
+        status.textContent = 'Read';
+
+        pagesYear.append(bookPages, bookYear);
+        bookChild.append(titleAuthor, pagesYear, status);
         bookParent.append(bookChild);        
     }
 }

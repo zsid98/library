@@ -22,13 +22,13 @@ body {
 .container {
     height: 900px;
     display: grid;
-    grid-template-rows: 70px 1fr 40px;
+    grid-template-rows: 70px 1fr;
 }
 
 header {
-    background-color: rgb(4, 38, 16);
+    background: rgb(4,38,16);
     color: white;
-    padding-left: 60px;
+    padding-left: 50px;
     display: flex;
     align-items: center;
     letter-spacing: 0.3ch;
@@ -41,13 +41,29 @@ h1 {
 .main {
     display: grid;
     grid-template-columns: 280px 1fr;
-    background-color: rgba(215, 178, 29, 0.758);
+    background: rgb(74,160,101);
+    background: linear-gradient(180deg, rgba(74,160,101,1) 25%, rgba(9,55,24,1) 100%);
 }
 
 .book-form {
-    background-color: rgb(34, 23, 91);
+    background-color: white;
     height: 400px;
     padding: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.input-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+input[type="tel"] {
+    width: 50px;
 }
 
 .books {
@@ -61,60 +77,54 @@ h1 {
 }
 
 .book {
-    width: 220px;
-    height: 270px;
-    display: flex;
-    flex-direction: row;
-    border-right: 8px solid rgb(255, 255, 255);
-    border-bottom: 8px solid rgb(255, 255, 255);
-}
-
-.spine {
-    background-color: rgb(1, 21, 8);
-    width: 25px;
-
-}
-
-.info {
-    width: calc(100% - 25px);
-    background-color: rgb(5, 61, 25);
-    color: white;
+    width: 210px;
+    height: 260px;
     display: flex;
     flex-direction: column;
-    padding-top: 60px;
     gap: 20px;
-    padding: 50px 10px 0px 10px;
+    border: 1px solid rgb(114, 164, 132);
+    box-shadow: 4px 4px 6px rgba(29, 69, 45, 0.764);
+    border-radius: 10px;
+    background-color: rgb(233, 254, 241);
+    padding-top: 60px;
     align-items: center;
     position: relative;
-   
-    & > * {
-        font-size: 16px;
-        width: max-content;
-        max-width: 170px;
-        text-wrap: wrap;
-        text-align: center;
-    }
 
-    & .book-title {
-        font-size: 18px;
-    }
-
-    & .book-year {
-        position: absolute;
-        bottom: 10px;
-        right: 10px;
-        font-size: 12px;
-    }
-
-    & .book-pages {
-        position: absolute;
-        bottom: 10px;
-        left: 10px;
-        font-size: 12px;
-    }
 }
 
+.title-author {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    color: rgb(7, 15, 43);
+    text-align: center;
+}
 
-footer {
-    background-color: rgb(4, 38, 16);
+.book-title {
+    font-family: 'Roboto Bold';
+    font-size: 18px;
+}
+
+.book-author {
+    font-size: 14px;
+}
+
+.pages-year {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0px 10px;
+    position: absolute;
+    bottom: 10px;
+    font-size: 12px;
+    color: rgb(86, 102, 89);
+
+}
+
+.status {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    background-color: rgb(26, 204, 88);
+    padding: 8px;
 }

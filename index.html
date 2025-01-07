@@ -13,11 +13,31 @@
         </header>
         <div class="main">
             <div class="book-form">
-            </div>
-            <div class="books">       
+                <p>Add New Book</p>
+                <form action="/">
+                    <div class="input-container">
+                        <label for="form-title">Title</label>
+                        <input id="form-title" name="form-title" type="text" required>
+                    </div>
+                    <div class="input-container">
+                        <label for="form-author">Author</label>
+                        <input id="form-author" name="form-author" type="text" required>
+                    </div>
+                    <div class="input-container">
+                        <label for="form-pages">Number of Pages</label>
+                        <input id="form-pages" name="form-pages" type="tel" required>
+                    </div>
+                    <div class="input-container">
+                        <label for="form-year">Year Published</label>
+                        <input id="form-year" name="form-year" type="tel">
+                    </div>
+                    <button type="submit">Add Book</button>
+                </form>
+                
+                </div>
+            <div class="books">     
             </div>
         </div>
-        <footer></footer>
     </div>
     <script src="script.js"></script>
 </body>
