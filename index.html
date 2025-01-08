@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>My Library</title>
     <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -14,28 +14,38 @@
         <div class="main">
             <div class="book-form">
                 <p>Add New Book</p>
-                <form action="/">
+                <form action="/" method="post">
                     <div class="input-container">
                         <label for="form-title">Title</label>
-                        <input id="form-title" name="form-title" type="text" required>
+                        <input id="form-title" name="form-title" type="text" required autocomplete="off">
                     </div>
                     <div class="input-container">
                         <label for="form-author">Author</label>
-                        <input id="form-author" name="form-author" type="text" required>
+                        <input id="form-author" name="form-author" type="text" required autocomplete="off">
                     </div>
                     <div class="input-container">
                         <label for="form-pages">Number of Pages</label>
-                        <input id="form-pages" name="form-pages" type="tel" required>
+                        <input id="form-pages" name="form-pages" type="number" required autocomplete="off">
                     </div>
                     <div class="input-container">
                         <label for="form-year">Year Published</label>
-                        <input id="form-year" name="form-year" type="tel">
+                        <input id="form-year" name="form-year" type="number" required autocomplete="off">
                     </div>
-                    <button type="submit">Add Book</button>
-                </form>
-                
-                </div>
-            <div class="books">     
+                    <div class="radio-container">
+                        <div>
+                            <input type="radio" id="read" name="read-status" value="read" checked>
+                            <label for="read">Read</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="not-read" name="read-status" value="unread">
+                            <label for="not-read">Not Read Yet</label>
+                        </div>
+                    </div>
+                    <button type="submit" class="add">Add Book</button>
+                </form>    
+            </div>
+            <div class="books">
+        
             </div>
         </div>
     </div>
