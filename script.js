@@ -10,6 +10,11 @@ function addBookToLibrary() {
     let formTitle = document.getElementById("form-title");
     let formAuthor = document.getElementById("form-author");
     let formPages = document.getElementById("form-pages");
+
+    if (Number(formPages.value) < 1) {
+        formPages.value = "";
+    }
+
     let formYear = document.getElementById("form-year");
 
     if (formTitle.value.trim() === "" ||
@@ -30,8 +35,8 @@ function addBookToLibrary() {
 
     book.title = formTitle.value;    
     book.author= formAuthor.value;
-    book.pages = formPages.value;
-    book.year = formYear.value;
+    book.pages = Number(formPages.value);
+    book.year = Number(formYear.value);
     formYear.value = "";
 
     myLibrary.push(book);
@@ -45,21 +50,6 @@ function addBookToLibrary() {
 function refreshLibrary() {
     const allBooks = document.querySelector(".books");
     allBooks.innerHTML = "";
-}
-
-// Delete book when remove-btn is pressed
-function removeBook() {
-    let removeBookButtons = document.querySelectorAll(".remove-btn");
-    removeBookButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            if (confirm("Do you want to remove this book from your library?")) {
-                let removeParent = btn.parentElement;
-                let indexRemove = removeParent.dataset.index;
-                delete myLibrary[indexRemove];
-                removeParent.remove();
-            }
-        })
-    })
 }
 
 function displayBooks() {
@@ -89,7 +79,10 @@ function displayBooks() {
 
         titleAuthor.append(bookTitle, bookAuthor);
 
-        let pagesYear = document.createElement('div');removeBook()
+        let pagesYear = document.createElement('div');
+        pagesYear.className = 'pages-year';
+
+        let bookPages = document.createElement('div');
         bookPages.className = 'book-pages';
         bookPages.textContent = `${currentObject.pages} pages`;
         
@@ -103,11 +96,11 @@ function displayBooks() {
         status.className = 'status';
 
         if (currentObject.status === "read") {
+            bookChild.dataset.stat = "read";            
             status.classList.add("read");
-            status.textContent = 'Read';
         } else if (currentObject.status === "unread") {
+            bookChild.dataset.stat = "unread";
             status.classList.add("unread");
-            status.textContent = 'Not Read Yet';
         }
         
         let removeBtn = document.createElement('div');
@@ -117,7 +110,34 @@ function displayBooks() {
         bookChild.append(titleAuthor, pagesYear, status, removeBtn);
         bookParent.append(bookChild); 
     }
-    removeBook();
+    // Remove book from library by pressing remove-btn
+    let removeBookButtons = document.querySelectorAll(".remove-btn");
+    removeBookButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (confirm("Do you want to remove this book from your library?")) {
+                let removeParent = btn.parentElement;
+                let indexRemove = removeParent.dataset.index;
+                delete myLibrary[indexRemove];
+                removeParent.remove();
+            }
+        })
+    });
+    // Toggle read/unread by pressing status
+    let statusButtons = document.querySelectorAll(".status");
+    statusButtons.forEach(btn => {
+        btn.addEventListener('click', () =>{
+            let currentStatus = btn.parentElement.dataset.stat;
+            if (currentStatus == "read") {
+                btn.parentElement.dataset.stat = "unread";
+                btn.classList.remove("read");
+                btn.classList.add("unread");
+            } else if (currentStatus == "unread") {
+                btn.parentElement.dataset.stat = "read";
+                btn.classList.remove("unread");
+                btn.classList.add("read");
+            }
+        }) 
+    })
 }
 
 let addBtn = document.querySelector(".add");

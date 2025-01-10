@@ -182,10 +182,19 @@ button:hover {
 
 .read {
     background-color: rgb(31, 213, 11);
+
+}
+
+.read::after {
+    content: "Read";
 }
 
 .unread {
     background-color: rgb(238, 170, 11);
+}
+
+.unread::after {
+    content: "Not Read Yet";
 }
 
 .remove-btn {
