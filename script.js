@@ -47,16 +47,34 @@ function refreshLibrary() {
     allBooks.innerHTML = "";
 }
 
+// Delete book when remove-btn is pressed
+function removeBook() {
+    let removeBookButtons = document.querySelectorAll(".remove-btn");
+    removeBookButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (confirm("Do you want to remove this book from your library?")) {
+                let removeParent = btn.parentElement;
+                let indexRemove = removeParent.dataset.index;
+                delete myLibrary[indexRemove];
+                removeParent.remove();
+            }
+        })
+    })
+}
+
 function displayBooks() {
     addBookToLibrary();
 
     for (let item in myLibrary) {
         let currentObject = myLibrary[item];
-        currentObject.id = item;
 
         let bookParent = document.querySelector('.books');
         let bookChild = document.createElement('div');
         bookChild.className = 'book';
+        
+        /* Connect every book card to an index */
+        currentObject.id = item;
+        bookChild.dataset.index = item;
 
         let titleAuthor = document.createElement('div');
         titleAuthor.className = 'title-author';
@@ -64,17 +82,14 @@ function displayBooks() {
         let bookTitle = document.createElement('div');
         bookTitle.className = 'book-title';
         bookTitle.textContent = currentObject.title;
-        
+
         let bookAuthor = document.createElement('div');
         bookAuthor.className = 'book-author';
         bookAuthor.textContent = `By ${currentObject.author}`;
 
         titleAuthor.append(bookTitle, bookAuthor);
 
-        let pagesYear = document.createElement('div');
-        pagesYear.className = 'pages-year';
-
-        let bookPages = document.createElement('div');
+        let pagesYear = document.createElement('div');removeBook()
         bookPages.className = 'book-pages';
         bookPages.textContent = `${currentObject.pages} pages`;
         
@@ -102,6 +117,7 @@ function displayBooks() {
         bookChild.append(titleAuthor, pagesYear, status, removeBtn);
         bookParent.append(bookChild); 
     }
+    removeBook();
 }
 
 let addBtn = document.querySelector(".add");
@@ -112,4 +128,5 @@ addBtn.addEventListener('click', () => {
     displayBooks();
     document.querySelector('form').reset;
 
-})
+});
+
