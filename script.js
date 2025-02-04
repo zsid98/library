@@ -1,152 +1,87 @@
 const myLibrary = [];
 
-function Book() {
-    // Constructor
+function Book(title, author, pages, year, status) {
+    this.title = title;
+    this.author = author;
+    this.pages = pages;
+    this.year = year;
+    this.status = status || "unread"; // Default status
+
+    this.toggleStatus = function () {
+        this.status = this.status === "read" ? "unread" : "read";
+    };
 }
 
-function addBookToLibrary() {
-    const book = new Book ();
-
-    let formTitle = document.getElementById("form-title");
-    let formAuthor = document.getElementById("form-author");
-    let formPages = document.getElementById("form-pages");
-
-    if (Number(formPages.value) < 1) {
-        formPages.value = "";
-    }
-
-    let formYear = document.getElementById("form-year");
-
-    if (formTitle.value.trim() === "" ||
-        formAuthor.value.trim() === "" ||
-        formPages.value.trim() === "" ||
-        formYear.value.trim() === "") {
-            alert("Fill out all fields");
-            return;
-    }
-
-    let radioButtons = document.querySelectorAll("input[name='read-status']");
-    for (let radioButton of radioButtons) {
-        if (radioButton.checked) {
-            book.status = radioButton.value;
-            break;
-        }
-    }
-
-    book.title = formTitle.value;    
-    book.author= formAuthor.value;
-    book.pages = Number(formPages.value);
-    book.year = Number(formYear.value);
-    formYear.value = "";
-
-    myLibrary.push(book);
-    
-    formTitle.value="";
-    formAuthor.value="";
-    formPages.value="";
-    formPages.year="";
+function addBookToLibrary(title, author, pages, year, status) {
+    const newBook = new Book(title, author, pages, year, status);
+    myLibrary.push(newBook);
+    renderBook(newBook, myLibrary.length - 1);
 }
+
 
 function refreshLibrary() {
-    const allBooks = document.querySelector(".books");
-    allBooks.innerHTML = "";
+    const bookParent = document.querySelector(".books");
+    bookParent.innerHTML = "";
+    myLibrary.forEach((book, index) => renderBook(book, index));
 }
 
-function displayBooks() {
-    addBookToLibrary();
-
-    for (let item in myLibrary) {
-        let currentObject = myLibrary[item];
-
-        let bookParent = document.querySelector('.books');
-        let bookChild = document.createElement('div');
-        bookChild.className = 'book';
-        
-        /* Connect every book card to an index */
-        currentObject.id = item;
-        bookChild.dataset.index = item;
-
-        let titleAuthor = document.createElement('div');
-        titleAuthor.className = 'title-author';
-
-        let bookTitle = document.createElement('div');
-        bookTitle.className = 'book-title';
-        bookTitle.textContent = currentObject.title;
-
-        let bookAuthor = document.createElement('div');
-        bookAuthor.className = 'book-author';
-        bookAuthor.textContent = `By ${currentObject.author}`;
-
-        titleAuthor.append(bookTitle, bookAuthor);
-
-        let pagesYear = document.createElement('div');
-        pagesYear.className = 'pages-year';
-
-        let bookPages = document.createElement('div');
-        bookPages.className = 'book-pages';
-        bookPages.textContent = `${currentObject.pages} pages`;
-        
-        let bookYear = document.createElement('div');
-        bookYear.className = 'book-year';
-        bookYear.textContent = currentObject.year;
-
-        pagesYear.append(bookPages, bookYear);
-
-        let status = document.createElement('div');
-        status.className = 'status';
-
-        if (currentObject.status === "read") {
-            bookChild.dataset.stat = "read";            
-            status.classList.add("read");
-        } else if (currentObject.status === "unread") {
-            bookChild.dataset.stat = "unread";
-            status.classList.add("unread");
-        }
-        
-        let removeBtn = document.createElement('div');
-        removeBtn.className = "remove-btn";
-        removeBtn.textContent = "❌";
-        
-        bookChild.append(titleAuthor, pagesYear, status, removeBtn);
-        bookParent.append(bookChild); 
-    }
-    // Remove book from library by pressing remove-btn
-    let removeBookButtons = document.querySelectorAll(".remove-btn");
-    removeBookButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            if (confirm("Do you want to remove this book from your library?")) {
-                let removeParent = btn.parentElement;
-                let indexRemove = removeParent.dataset.index;
-                delete myLibrary[indexRemove];
-                removeParent.remove();
-            }
-        })
-    });
-    // Toggle read/unread by pressing status
-    let statusButtons = document.querySelectorAll(".status");
-    statusButtons.forEach(btn => {
-        btn.addEventListener('click', () =>{
-            let currentStatus = btn.parentElement.dataset.stat;
-            if (currentStatus == "read") {
-                btn.parentElement.dataset.stat = "unread";
-                btn.classList.remove("read");
-                btn.classList.add("unread");
-            } else if (currentStatus == "unread") {
-                btn.parentElement.dataset.stat = "read";
-                btn.classList.remove("unread");
-                btn.classList.add("read");
-            }
-        }) 
-    })
-}
-
-let addBtn = document.querySelector(".add");
-
-addBtn.addEventListener('click', () => {
+function toggleBookStatus(index) {
+    myLibrary[index].toggleStatus();
     refreshLibrary();
+}
+
+function removeBook(index) {
+    if (!confirm("Do you want to remove this book from your library?")) return;
+    
+    myLibrary.splice(index, 1);
+    refreshLibrary();
+}
+
+function renderBook(book, index) {
+    const bookParent = document.querySelector(".books");
+
+    const bookChild = document.createElement("div");
+    bookChild.className = "book";
+    bookChild.dataset.index = index;
+    bookChild.dataset.stat = book.status;
+
+    bookChild.innerHTML = `
+        <div class="title-author">
+            <div class="book-title">${book.title}</div>
+            <div class="book-author">By ${book.author}</div>
+        </div>
+        <div class="pages-year">
+            <div class="book-pages">${book.pages} pages</div>
+            <div class="book-year">${book.year}</div>
+        </div>
+        <div class="status ${book.status === "read" ? "read" : "unread"}"></div>
+
+        <div class="remove-btn">❌</div>
+    `;   
+
+    bookChild.querySelector(".status").addEventListener("click", () => toggleBookStatus(index));
+    bookChild.querySelector(".remove-btn").addEventListener("click", () => removeBook(index));
+   
+    bookParent.appendChild(bookChild);
+}
+
+
+// Handle form
+document.querySelector("form").addEventListener("submit", (event) => {
     event.preventDefault();
-    displayBooks();
-    document.querySelector('form').reset;
 
-});
+    const title  = document.getElementById("form-title").value.trim();
+    const author = document.getElementById("form-author").value.trim();
+    const pages  = parseInt(document.getElementById("form-pages").value);
+    const year   = parseInt(document.getElementById("form-year").value);
+    const status = document.querySelector("input[name='read-status']:checked").value;
 
+    if (!title || !author || isNaN(pages) || isNaN(year)) {
+        alert("Please fill out all fields correctly.");
+        return;
+    }
+
+    addBookToLibrary(title, author, pages, year, status);
+    event.target.reset();
+
+})
